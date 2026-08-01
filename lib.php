@@ -390,8 +390,8 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
 
 					// MIXED TEAMS
 					$i=1;
-					CreateEvent($TourId, $i++, 1, 1,  8, 5, 4, 4, 2, 4, 4, 2, 'DMCL', 'Double Mixte Classique',  1, 0, MATCH_ALL_SEP, 0, 0, '', '',  122, 70);
-					CreateEvent($TourId, $i++, 1, 1,  8, 9, 4, 4, 2, 4, 4, 2, 'DMCO', 'Double Mixte Poulie',  0, 0, MATCH_ALL_SEP, 0, 0, '', '',  80, 50);
+					CreateEvent($TourId, $i++, 1, 1,  8, 5, 4, 4, 2, 4, 4, 2, 'DMCL', 'Double Mixte Arc Classique',  1, 0, MATCH_ALL_SEP, 0, 0, '', '',  122, 70);
+					CreateEvent($TourId, $i++, 1, 1,  8, 9, 4, 4, 2, 4, 4, 2, 'DMCO', 'Double Mixte Arc à Poulies',  0, 0, MATCH_ALL_SEP, 0, 0, '', '',  80, 50);
                     break;
 				case 11: // Championnat de France Adulte
                     $Options=[
