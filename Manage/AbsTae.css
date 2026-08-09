@@ -33,3 +33,44 @@ input[type="text"] {width:100%}
     90%   {background-color: #cc0000;}
     100% {background-color: transparent;}
 }
+
+@media print {
+  /* Repeat the table header on every printed page */
+  table.Tabella2 thead {
+    display: table-header-group;
+  }
+
+  /* Avoid rows splitting across a page break */
+  table.Tabella2 tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Force a new page right after each divider row (i.e. before the next event's first row) */
+  table.Tabella2 tr.Divider {
+    break-after: page;
+    page-break-after: always;
+
+    /* optional: hide the divider itself in print since the page break already separates the events */
+    visibility: hidden;
+    height: 0;
+    line-height: 0;
+  }
+
+  tr.Divider th {
+    padding: 0;
+    border: none;
+  }
+
+  /* Prevent an extra blank trailing page if the last row in the table happens to be a Divider */
+  tr.Divider:last-of-type {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* Keep each event's title/header with its first row */
+  tr.EventLine {
+    break-before: avoid;
+    page-break-before: avoid;
+  }
+}

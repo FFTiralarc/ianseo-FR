@@ -51,7 +51,7 @@ include('Common/Templates/head.php');
 
 $q=safe_r_sql("select ToGolds, ToXNine from Tournament where ToId={$_SESSION['TourId']}");
 $TOUR=safe_fetch($q);
-$Sql = "select EvCode, IndId, QuScore, QuGold, QuXnine, IndRank, IndTieBreak, IndTbDecoded, IndTbClosest, EnFirstName, EnName, if(TfT2>0, TfT2, TfT1) as TargetId
+$Sql = "select EvCode, IndId, QuScore, QuGold, QuXnine, QuTarget, QuLetter, IndRank, IndTieBreak, IndTbDecoded, IndTbClosest, EnFirstName, EnName, if(TfT2>0, TfT2, TfT1) as TargetId
             from Individuals
             inner join Qualifications on QuId=IndId
             inner join Entries on EnId=IndId
@@ -88,10 +88,11 @@ while ($r=safe_fetch($q)) {
     $OldEvent=$r->EvCode;
 }
 echo '<table class="Tabella2">';
-echo '<thead><tr><th colspan="11" class="Title">'.(get_text('ShootOff4Rank') . ' - ' . get_text('Individual')).'</th></tr>';
+echo '<thead><tr><th colspan="12" class="Title">'.(get_text('ShootOff4Rank') . ' - ' . get_text('Individual')).'</th></tr>';
 echo '<tr>
     <th>'.get_text('Event').'</th>
     <th colspan="2"></th>
+    <th>'.get_text('Target').'</th>
     <th>'.get_text('Score', 'Tournament').'</th>
     <th>'.$TOUR->ToGolds.'</th>
     <th>'.$TOUR->ToXNine.'</th>
@@ -103,7 +104,7 @@ $First=true;
 foreach($Cats as $EvCode => $Items) {
 
     if(!$First) {
-        echo '<tr class="Divider"><th colspan="11" class="Divider">&nbsp;</th></tr>';
+        echo '<tr class="Divider"><th colspan="12" class="Divider">&nbsp;</th></tr>';
     }
     $First=false;
 
@@ -113,6 +114,7 @@ foreach($Cats as $EvCode => $Items) {
                 '<th class="w-10ch">'.$r->EvCode.'</th>'.
                 '<td>'.$r->EnFirstName.'</td>'.
                 '<td>'.$r->EnName.'</td>'.
+                '<td>'.$r->QuTarget.$r->QuLetter.'</td>'.
                 '<td class="Right w-7ch">'.$r->QuScore .'</td>'.
                 '<td class="Right w-7ch">'.$r->QuGold.'</td>'.
                 '<td class="Right w-7ch">'.$r->QuXnine.'</td>'.
