@@ -47,7 +47,7 @@ input[type="text"] {width:100%}
   }
 
   /* Force a new page right after each divider row (i.e. before the next event's first row) */
-  tr.Divider {
+  table.Tabella2 tr.Divider {
     break-after: page;
     page-break-after: always;
 
