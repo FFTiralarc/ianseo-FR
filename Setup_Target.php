@@ -176,6 +176,7 @@ switch($TourType) {
 	case 6:
         if($SubRule==4) {
             // PARA
+			CreateDistanceNew($TourId, $TourType, 'CLU11%', array(array('10m-1',10), array('10m-2',10)));
             CreateDistanceNew($TourId, $TourType, 'CLU%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CLS%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CO%', array(array('18m-1',18), array('18m-2',18)));
@@ -190,6 +191,7 @@ switch($TourType) {
             CreateDistanceNew($TourId, $TourType, 'CRCL%', array(array('10m-1',10), array('10m-2',10)));
             CreateDistanceNew($TourId, $TourType, 'CRCO%', array(array('15m-1',15), array('15m-2',15)));
         } else {
+			CreateDistanceNew($TourId, $TourType, 'CLU11%', array(array('10m-1',10), array('10m-2',10)));
             CreateDistanceNew($TourId, $TourType, 'CLU%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CLS%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CO%', array(array('18m-1',18), array('18m-2',18)));
@@ -282,8 +284,8 @@ switch($TourType) {
 			case '4': // selectif + para
 				// All classes
 				CreateTargetFace($TourId, $TgtId++, 'Blason Unique 40cm', 'REG-(^CLU18)|(^CLU21)|(^CLS)|(^BBS)|(^BBU2)'.($SubRule==4 ? '|(^OPCLS)|(^OPCLU2)|(^FECLS)|(^FECLU2)|(^W1)' : ''), '1', 1, 40, 1, 40);
-				CreateTargetFace($TourId, $TgtId++, 'Blason Unique 60cm', 'REG-(^CLU1[35])|(^BBU1)'.($SubRule==4 ? '|(^CH)|(^CR)|(^H)|(^OPC.U1)|(^FEC.U1)' : ''), '1', 1, 60, 1, 60);
-				CreateTargetFace($TourId, $TgtId++, 'Blason Unique 80cm', $SubRule==4 ? 'REG-(^CLU11)|(^SU)' : 'CLU11%', '1', 1, 80, 1, 80);
+				CreateTargetFace($TourId, $TgtId++, 'Blason Unique 60cm', 'REG-(^CLU11)|(^CLU1[35])|(^BBU1)'.($SubRule==4 ? '|(^CH)|(^CR)|(^H)|(^OPC.U1)|(^FEC.U1)' : ''), '1', 1, 60, 1, 60);
+				CreateTargetFace($TourId, $TgtId++, 'Blason Unique 80cm', $SubRule==4 ? 'REG-(^SU)' : 'REG-^$', '1', 1, 80, 1, 80);	
 				CreateTargetFace($TourId, $TgtId++, 'Trispot Poulie 6-10 40cm', $SubRule==4 ? 'REG-(^CO)|(^OPCOU2)|(^OPCOS)|(^FECOU2)|(^FECOS)' : 'CO%', '1', 4, 40, 4, 40);
 				CreateTargetFace($TourId, $TgtId++, 'Blason Découverte', 'CLD%', '1',  1, 80, 1, 80);
 
