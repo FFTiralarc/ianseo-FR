@@ -177,7 +177,10 @@ switch($TourType) {
         if($SubRule==4) {
             // PARA
 			CreateDistanceNew($TourId, $TourType, 'CLU11%', array(array('10m-1',10), array('10m-2',10)));
-            CreateDistanceNew($TourId, $TourType, 'CLU%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU13%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU15%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU18%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU21%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CLS%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CO%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'BB%', array(array('18m-1',18), array('18m-2',18)));
@@ -192,7 +195,10 @@ switch($TourType) {
             CreateDistanceNew($TourId, $TourType, 'CRCO%', array(array('15m-1',15), array('15m-2',15)));
         } else {
 			CreateDistanceNew($TourId, $TourType, 'CLU11%', array(array('10m-1',10), array('10m-2',10)));
-            CreateDistanceNew($TourId, $TourType, 'CLU%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU13%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU15%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU18%', array(array('18m-1',18), array('18m-2',18)));
+            CreateDistanceNew($TourId, $TourType, 'CLU21%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CLS%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'CO%', array(array('18m-1',18), array('18m-2',18)));
             CreateDistanceNew($TourId, $TourType, 'BB%', array(array('18m-1',18), array('18m-2',18)));
