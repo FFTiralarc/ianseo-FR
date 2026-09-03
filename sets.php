@@ -2,7 +2,7 @@
 require_once('Common/Fun_Modules.php');
 $version='2017-11-23 18:13:00';
 
-$AllowedTypes=array(3, 6, 7, 8, 50);
+$AllowedTypes=array(3, 6, 7, 8, 9, 11, 50);
 
 $SetType['FR']['descr']=get_text('Setup-FR', 'Install');
 $SetType['FR']['noc'] = 'FRA';
@@ -12,6 +12,11 @@ $SetType['FR']['rules']=array();
 foreach($AllowedTypes as $val) {
 	$SetType['FR']['types']["$val"]=$TourTypes[$val];
 }
+
+$SetType['FR']['rules']["9"]["0"]='SetFRDominical';
+$SetType['FR']['rules']["9"]["1"]='SetFRChampionship';
+$SetType['FR']['rules']["11"]["0"]='SetFRDominical';
+$SetType['FR']['rules']["11"]["1"]='SetFRChampionship';
 
 // BUILD ONE PER TIME... When finished we can group
 // 70m round have several championship and "styles"
