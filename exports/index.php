@@ -31,8 +31,8 @@ if(!empty($_REQUEST['lev'])) {
 
 	// get the judges
 	$Select="SELECT TiCode Judges
-		FROM TournamentInvolved  
-		inner JOIN InvolvedType ON TiType=ItId 
+		FROM TournamentInvolved
+		inner JOIN InvolvedType ON TiType=ItId
 		WHERE TiTournament={$_SESSION['TourId']} AND (ItJudge>0 or ItDos>0) AND ItId != 5
 		order by ItDos, ItJudge";
 	$Judges=[];
@@ -95,17 +95,17 @@ if(!empty($_REQUEST['lev'])) {
         $_REQUEST['lev']='S';
     }
 	$q=safe_r_sql("select EnIocCode, ucase(EnCode) as EnCode, ucase(EnFirstName) as EnFirstName, ucase(EnName) as EnName, EnDivision, EnAgeClass, EnClass, EnSex,
-			ifnull(IndEvent,'-') as IndEvent, EnId, 
-			ucase(CoName) as CoName, CoCode, 
+			ifnull(IndEvent,'-') as IndEvent, EnId,
+			ucase(CoName) as CoName, CoCode,
 			QuScore, QuSession, QuD1Score, QuD2Score, QuD3Score, QuD4Score, QuHits, QuGold, QuXnine, QuD1Arrowstring,
 			QuArrow,
-			MaxArrows, MaxDistance, MaxTargetFace, 
-			IndRank, QuClRank, IndRankFinal 
+			MaxArrows, MaxDistance, MaxTargetFace,
+			IndRank, QuClRank, IndRankFinal, TfPiquet
 		from Qualifications
 		inner join Entries on EnId=QuId
         inner join Divisions on DivId=EnDivision and DivTournament=EnTournament $Filter
 		inner join Countries on CoId=EnCountry and CoTournament=EnTournament
-		inner join (select TfId, greatest(TfW1, TfW2, TfW3, TfW4, TfW5, TfW6, TfW7, TfW8) as MaxTargetFace from TargetFaces where TfTournament={$_SESSION['TourId']}) TargetFaces on TfId=EnTargetFace
+		inner join (select TfId, if(TfName like '%rouge%', 1, if(TfName like '%bleu%', 2, if(TfName like '%blanc%' , 3, if(TfName like '%rose%' , 4, 0)))) as TfPiquet, greatest(TfW1, TfW2, TfW3, TfW4, TfW5, TfW6, TfW7, TfW8) as MaxTargetFace from TargetFaces where TfTournament={$_SESSION['TourId']}) TargetFaces on TfId=EnTargetFace
 		inner join (select DiSession, sum(DiEnds*DiArrows) as MaxArrows from DistanceInformation where DiTournament={$_SESSION['TourId']} group by DiSession) DistanceArrows on DiSession=QuSession
 		inner join (select TdClasses, greatest(Td1+0, Td2+0, Td3+0, Td4+0, Td5+0, Td6+0, Td7+0, Td8+0) as MaxDistance from TournamentDistances where TdTournament={$_SESSION['TourId']}) Distances on concat(EnDivision,EnClass) like TdClasses
 		left join Individuals on IndId=EnId
@@ -189,21 +189,27 @@ if(!empty($_REQUEST['lev'])) {
         }
         $EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"]++;
 
-		// Remove rank from archers shooting more than one session
-		if ($EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"] > 1) {
-			$r->IndRankFinal = 0;
+		// Un archer hors épreuve individuelle compte comme un tir supplémentaire (Tir N°2+),
+		// pour être écarté du classement officiel comme les tirs multiples.
+		if ('-' === $r->IndEvent && 1 === $EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"]) {
+			$EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"]++;
 		}
 
-		// Remove rank from archers not shooting in events
-		if ('-' === $r->IndEvent) {
-			$r->IndRankFinal = 0;
-			// Put them also in other shoots
-			if (1 === $EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"]) {
-				$EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"]++;
-			}
+		// Places FFTA / Exalto (colonnes 22 et 48) :
+		//  - Tir N°1 comptant : place de qualification = classement de qualification de
+		//    l'épreuve (IndRank) ; place finale = résultat des duels (IndRankFinal), ou à
+		//    défaut de duels la place de qualification (IndRank, jamais 0).
+		//  - Tir N°2 et plus (ou hors-épreuve) : 99999 dans les deux colonnes — valeur non
+		//    nulle ignorée par Exalto, qui écarte ces lignes du classement officiel.
+		if (1 === $EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"]) {
+			$QualPlace  = $r->IndRank;
+			$FinalPlace = $r->IndRankFinal ? $r->IndRankFinal : $r->IndRank;
+		} else {
+			$QualPlace  = 99999;
+			$FinalPlace = 99999;
 		}
 
-        $Archers[$r->IndEvent][$r->EnId]=array_fill(0, 51, '');
+        $Archers[$r->IndEvent][$r->EnId]=array_fill(0, 52, '');
 		$Archers[$r->IndEvent][$r->EnId][0] = $Discipline;
 		$Archers[$r->IndEvent][$r->EnId][1] = $_REQUEST['lev'];
 		$Archers[$r->IndEvent][$r->EnId][2] = 'I'; // E if team
@@ -235,17 +241,18 @@ if(!empty($_REQUEST['lev'])) {
 			$Archers[$r->IndEvent][$r->EnId][23] = $r->QuD2Score ? $r->QuD2Score : '';
 		}
 
-		$Archers[$r->IndEvent][$r->EnId][17] = $r->MaxDistance;
-		$Archers[$r->IndEvent][$r->EnId][18] = $r->MaxTargetFace;
+		$Archers[$r->IndEvent][$r->EnId][17] = ($COMP->ToCategory==4 or $COMP->ToCategory==8) ? $r->TfPiquet : $r->MaxDistance;
+		$Archers[$r->IndEvent][$r->EnId][18] = ($COMP->ToCategory==4 or $COMP->ToCategory==8) ? '' : $r->MaxTargetFace;
 		$Archers[$r->IndEvent][$r->EnId][19] = date('d/m/Y', strtotime($COMP->ToWhenFrom));
 		$Archers[$r->IndEvent][$r->EnId][20] = str_replace(["\n","\r"], ' / ', trim($COMP->ToVenue));
-		$Archers[$r->IndEvent][$r->EnId][21] = $r->QuClRank;
+		$Archers[$r->IndEvent][$r->EnId][21] = $QualPlace;
 		$Archers[$r->IndEvent][$r->EnId][24] = $r->QuD3Score ? $r->QuD3Score : '';
 		$Archers[$r->IndEvent][$r->EnId][25] = $r->QuD4Score ? $r->QuD4Score : '';
-		$Archers[$r->IndEvent][$r->EnId][47] = $r->IndRankFinal;
+		$Archers[$r->IndEvent][$r->EnId][47] = $FinalPlace;
 		$Archers[$r->IndEvent][$r->EnId][48] = '1'; // will always be a valid competition... set to 1 if official FFTA Ranking Category
 		$Archers[$r->IndEvent][$r->EnId][49] = $r->EnDivision;
 		$Archers[$r->IndEvent][$r->EnId][50] = $EnCodes["{$r->EnCode}-{$r->EnDivision}-{$r->EnClass}"];
+		$Archers[$r->IndEvent][$r->EnId][51] = $r->QuSession;
 	}
 
 	// get the matches
@@ -301,7 +308,7 @@ if(!empty($_REQUEST['lev'])) {
 	1.	discipline	alpa	1	car.	"S=salle,F=fita,C=campagne N=nature,B=beursault,3=3D,E=fed."
 	2.	niveau compétition	alpa	1	car.	"N=national,R=régional D=départ.,C=club,I=internat."
 	3.	type chpt	alpa	1	car.	I=individuel ou E=equipe
-	4.	N°licence	alpha-numerique	7	car.
+	4.	N°licence	alpha-numerique	8	car.
 	5.	nom	alpha
 	6.	prénom	alpha
 	7.	catégorie	alpha	2	car.	B, M, C, J, S, V et SV
@@ -315,7 +322,7 @@ if(!empty($_REQUEST['lev'])) {
 	15.	paille	numérique	2	car.
 	16.	dix	numérique	2	car.
 	17.	neuf	numérique	2	car.
-	18.	distance	numérique	2	car.	18,20,25,30,50,60,70,90 (si discipline à plusieurs distances, mettre la plus longue) 1=piquet rouge 2 =piquer bleu 3=piquet blanc
+	18.	distance	numérique	2	car.	18,20,25,30,50,60,70,90 (si discipline à plusieurs distances, mettre la plus longue) 1=piquet rouge 2 =piquer bleu 3=piquet blanc 4=piquet rose
 	19.	blason	numérique	3	car.	"40,60,80,122 (ne rien inscrire pour les disciplines de parcours)"
 	20.	date concours	date	10	car.	JJ/MM/AAAA
 	21.	lieu du concours	alpha
@@ -349,7 +356,9 @@ if(!empty($_REQUEST['lev'])) {
 	49.	catégorie officielle	numérique	1	car.	"1=vrai(cat fait objet d'un clt FFTA) 0=faux(cat ne fait pas l'objet d'1clt)"
 	50.	arme utilisée	alpha	2	car.	idem champ 10
 	51.	nombre de tir (départ)	numérique	1	car.	numero chronologique
-
+	52.	numéro de départ	numérique		car.	numéro de la session (départ) correspondant à cette ligne
+	53. [reservé Exalto] identification para 
+	54. [reservé Exalto] état ligne (OK/KO)
 
 
 	 */
@@ -389,7 +398,7 @@ echo '<tr>
 	<th>'.get_text('LookupTable', 'Tournament').'</th>
 	<th>'.get_text('ChangeLookUpTable', 'Tournament').'</th>
 	</tr>';
-$q=safe_r_sql("select * 
+$q=safe_r_sql("select *
 	from Entries
 	inner join Tournament on ToId=EnTournament and EnIocCode!=Tournament.ToIocCode
 	where EnTournament={$_SESSION['TourId']}");

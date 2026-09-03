@@ -15,20 +15,30 @@ if(empty($SubRule)) $SubRule='1';
 function CreateStandardDivisions($TourId, $TourType, $SubRule) {
     $isTAE=in_array($TourType, [1,2,3,4, 50]);
     $IsIndoor=in_array($TourType, [6,7,8]);
+    $isField=in_array($TourType, [9]);
+    $is3D=in_array($TourType, [11]);
     $isTAENorm=($TourType==3 and $SubRule==13);
     $isTAEPara=(($TourType==3 and $SubRule==14) or ($TourType==6 and $SubRule==4) or ($TourType==7 and $SubRule==4) or ($TourType==8 and $SubRule==4));
     $HasOfficials=(($TourType==3 and in_array($SubRule, [2, 3, 9, 10, 11, 15, 16])) or ($TourType==6 and in_array($SubRule, [2, 3])));
 	$i=1;
+    if($is3D) {
+        CreateDivision($TourId, $i++, 'CL', 'Arc Nu', 1);
+        CreateDivision($TourId, $i++, 'CO', 'Arc à Poulies Nu', 1);
+        CreateDivision($TourId, $i++, 'AD', 'Arc Droit', 1);
+        CreateDivision($TourId, $i++, 'TL', 'Arc Libre', 1);
+        CreateDivision($TourId, $i++, 'AC', 'Arc Chasse', 1);
+        return;
+    }
     CreateDivision($TourId, $i++, 'CL', 'Arc Classique', 1, 'R', 'R');
     if(!in_array($SubRule, [15, 16])) {
         // Finales D2 and Championnats de france Jeunes par Equipes do not have Compounds, Recurve only
         CreateDivision($TourId, $i++, 'CO', 'Arc à Poulies', 1, 'C', 'C');
     }
-	if($isTAE or $IsIndoor) {
-        if($isTAENorm or $IsIndoor or $isTAEPara or ($TourType==3 and $SubRule==11) or $TourType==50) {
+	if($isTAE or $IsIndoor or $isField) {
+        if($isTAENorm or $IsIndoor or $isTAEPara or ($TourType==3 and $SubRule==11) or $TourType==50 or $isField) {
             CreateDivision($TourId, $i++, 'BB', 'Arc Nu', 1, 'B', 'B');
         }
-        if($TourType==50) {
+        if($TourType==50 or $isField) {
             // Beursault
             CreateDivision($TourId, $i++, 'AD', 'Arc Droit', 1, '', '');
         }
@@ -71,13 +81,13 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
 			switch($SubRule) {
 				case '1':
 				case '4':
-					// All classes...
+					// All classes... Sélectif & Sélectif + Para
                     if($TourType==6) {
                         CreateClass($TourId, $i++,  1, 10+$NextYearClass, 1, 'U11F', 'U11F,U13F', 'U11 Femme', '1', 'CL', '', '');
                         CreateClass($TourId, $i++,  1, 10+$NextYearClass, 0, 'U11H', 'U11H,U13H', 'U11 Homme', '1', 'CL', '', '');
                     }
-					CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13F', 'U13F,U15F', 'U13 Femme', '1', 'CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
-					CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13H', 'U13H,U15H', 'U13 Homme', '1', 'CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
+					CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13F', 'U13F,U15F', 'U13 Femme', '1', 'BB,CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
+					CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13H', 'U13H,U15H', 'U13 Homme', '1', 'BB,CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
 					CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 1, 'U15F', 'U15F,U18F', 'U15 Femme', '1', 'BB,CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
 					CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 0, 'U15H', 'U15H,U18H', 'U15 Homme', '1', 'BB,CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
 					CreateClass($TourId, $i++, 15+$NextYearClass, 17+$NextYearClass, 1, 'U18F', 'U18F,U21F,S1F', 'U18 Femme', '1', 'BB,CL,CO'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), 'U18W', 'U18W');
@@ -88,8 +98,8 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
 					CreateClass($TourId, $i++, 21+$NextYearClass, 39+$NextYearClass, 0, 'S1H', 'S1H', 'Senior 1 Homme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), 'M', 'M');
 					CreateClass($TourId, $i++, 40+$NextYearClass, 59+$NextYearClass, 1, 'S2F', 'S2F,S1F', 'Senior 2 Femme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
 					CreateClass($TourId, $i++, 40+$NextYearClass, 59+$NextYearClass, 0, 'S2H', 'S2H,S1H', 'Senior 2 Homme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '', '');
-					CreateClass($TourId, $i++, 60+$NextYearClass,100, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '50W', '50W');
-					CreateClass($TourId, $i++, 60+$NextYearClass,100, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Homme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '50M', '50M');
+					CreateClass($TourId, $i++, 60+$NextYearClass,127, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '50W', '50W');
+					CreateClass($TourId, $i++, 60+$NextYearClass,127, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Homme', '1', 'BB,CO,CL'.($isTAEPara?',OPCL,FECL,OPCO,FECO,W1,CHCL,CRCL,CHCO,CRCO,HV1,HV2,HLCL,HLCO,SU1,SU2':''), '50M', '50M');
                     CreateClass($TourId, $i++, 1,127, -1, 'DEC', 'DEC', 'Découverte', '1', 'CL', '', '');
 					break;
 				case '2':
@@ -100,8 +110,8 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
 					CreateClass($TourId, $i++, 21+$NextYearClass, 39+$NextYearClass, 0, 'S1H', 'S1H', 'Senior 1 Homme', '1', 'BB,CL,CO', 'W', 'M');
 					CreateClass($TourId, $i++, 40+$NextYearClass, 59+$NextYearClass, 1, 'S2F', 'S2F,S1F', 'Senior 2 Femme', '1', 'BB,CL,CO', '', '');
 					CreateClass($TourId, $i++, 40+$NextYearClass, 59+$NextYearClass, 0, 'S2H', 'S2H,S1H', 'Senior 2 Homme', '1', 'BB,CL,CO', '', '');
-					CreateClass($TourId, $i++, 60+$NextYearClass,100, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femme', '1', 'BB,CL,CO', '50W', '50W');
-					CreateClass($TourId, $i++, 60+$NextYearClass,100, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Homme', '1', 'BB,CL,CO', '50M', '50M');
+					CreateClass($TourId, $i++, 60+$NextYearClass,127, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femme', '1', 'BB,CL,CO', '50W', '50W');
+					CreateClass($TourId, $i++, 60+$NextYearClass,127, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Homme', '1', 'BB,CL,CO', '50M', '50M');
 
                     CreateSubClass($TourId, '1','A','Adulte');
                     CreateSubClass($TourId, '2','E','Elite');
@@ -132,8 +142,8 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
             CreateClass($TourId, $i++, 21+$NextYearClass, 39+$NextYearClass, 0, 'S1H', 'S1H', 'Senior 1 Homme', '1', '', '', '');
             CreateClass($TourId, $i++, 40+$NextYearClass, 59+$NextYearClass, 1, 'S2F', 'S2F,S1F', 'Senior 2 Femme', '1', '', '', '');
             CreateClass($TourId, $i++, 40+$NextYearClass, 59+$NextYearClass, 0, 'S2H', 'S2H,S1H', 'Senior 2 Homme', '1', '', '', '');
-            CreateClass($TourId, $i++, 60+$NextYearClass,100, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femme', '1', '', '', '');
-            CreateClass($TourId, $i++, 60+$NextYearClass,100, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Homme', '1', '', '', '');
+            CreateClass($TourId, $i++, 60+$NextYearClass,127, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femme', '1', '', '', '');
+            CreateClass($TourId, $i++, 60+$NextYearClass,127, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Homme', '1', '', '', '');
 			break;
 		case '3': // 72 arrows round
             switch($SubRule) {
@@ -180,13 +190,13 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
                     CreateClass($TourId, $i++, 60+$NextYearClass,127, 0, 'S3M', 'S3M,S2M,S1M', 'Senior 3 Hommes National', '1', 'CL,CO,BB', '', '');
                     break;
                 case 13:
-                case 14:
+                case 14: // Sélectif TAE & Sélectif TAE + Para
                     CreateClass($TourId, $i++,  1, 10+$NextYearClass, 1, 'U11F', 'U11F,U13F', 'U11 Femmes', '1', 'CL', '', '');
                     CreateClass($TourId, $i++,  1, 10+$NextYearClass, 0, 'U11H', 'U11H,U13H', 'U11 Hommes', '1', 'CL', '', '');
-                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13F', 'U13F,U15F', 'U13 Femmes', '1', 'CL'.($isTAEPara?',HV1,HV2,W1':''), '', '');
-                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13H', 'U13H,U15H', 'U13 Hommes', '1', 'CL'.($isTAEPara?',HV1,HV2,W1':''), '', '');
-                    CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 1, 'U15F', 'U15F,U18F', 'U15 Femmes', '1', 'CL'.($isTAEPara?',HV1,HV2,W1':''), '', '');
-                    CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 0, 'U15H', 'U15H,U18H', 'U15 Hommes', '1', 'CL'.($isTAEPara?',HV1,HV2,W1':''), '', '');
+                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13F', 'U13F,U15F', 'U13 Femmes', '1', 'CL,CO'.($isTAEPara?',HV1,HV2,W1':''), '', '');
+                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13H', 'U13H,U15H', 'U13 Hommes', '1', 'CL,CO'.($isTAEPara?',HV1,HV2,W1':''), '', '');
+                    CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 1, 'U15F', 'U15F,U18F', 'U15 Femmes', '1', 'CL,CO'.($isTAEPara?',HV1,HV2,W1':''), '', '');
+                    CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 0, 'U15H', 'U15H,U18H', 'U15 Hommes', '1', 'CL,CO'.($isTAEPara?',HV1,HV2,W1':''), '', '');
                     CreateClass($TourId, $i++, 15+$NextYearClass, 17+$NextYearClass, 1, 'U18F', 'U18F,U21F,S1F', 'U18 Femmes', '1', 'CL,CO'.(($isTAEPara)?',HV1,HV2,W1':''), 'U18W', 'U18W');
                     CreateClass($TourId, $i++, 15+$NextYearClass, 17+$NextYearClass, 0, 'U18H', 'U18H,U21H,S1H', 'U18 Hommes', '1', 'CL,CO'.($isTAEPara?',HV1,HV2,W1':''), 'U18M', 'U18M');
                     CreateClass($TourId, $i++, 18+$NextYearClass, 20+$NextYearClass, 1, 'U21F', 'U21F,S1F', 'U21 Femmes', '1', 'CL,CO'.($isTAEPara?',FECL,FECO,OPCL,OPCO,HV1,HV2,W1':''), 'U21W', 'U21W');
@@ -198,8 +208,10 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
                     CreateClass($TourId, $i++, 60+$NextYearClass,127, 1, 'S3F', 'S3F,S2F,S1F', 'Senior 3 Femmes', '1', 'CL,CO'.($isTAEPara?',FECL,FECO,OPCL,OPCO,HV1,HV2,W1':''), '50W', '50W');
                     CreateClass($TourId, $i++, 60+$NextYearClass,127, 0, 'S3H', 'S3H,S2H,S1H', 'Senior 3 Hommes', '1', 'CL,CO'.($isTAEPara?',FECL,FECO,OPCL,OPCO,HV1,HV2,W1':''), '50M', '50M');
                     CreateClass($TourId, $i++, 1,127, -1, 'DEC', 'DEC', 'Découverte', '1', 'CL', '', '');
-                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13W', 'U13W,U15W', 'U13 Femmes National', '1', 'CL,CO'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
-                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13M', 'U13M,U15M', 'U13 Hommes National', '1', 'CL,CO'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
+                    CreateClass($TourId, $i++, 1, 10+$NextYearClass, 1, 'U11W', 'U11W,U13W', 'U11 Femmes National', '1', 'CL', '', '');
+                    CreateClass($TourId, $i++, 1, 10+$NextYearClass, 0, 'U11M', 'U11M,U13M', 'U11 Hommes National', '1', 'CL', '', '');
+                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13W', 'U13W,U15W', 'U13 Femmes National', '1', 'CL,CO,BB'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
+                    CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13M', 'U13M,U15M', 'U13 Hommes National', '1', 'CL,CO,BB'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
                     CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 1, 'U15W', 'U15W,U18W', 'U15 Femmes National', '1', 'CL,CO,BB'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
                     CreateClass($TourId, $i++, 13+$NextYearClass, 14+$NextYearClass, 0, 'U15M', 'U15M,U18M', 'U15 Hommes National', '1', 'CL,CO,BB'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
                     CreateClass($TourId, $i++, 15+$NextYearClass, 17+$NextYearClass, 1, 'U18W', 'U18W,U21W,S1W', 'U18 Femmes National', '1', 'CL,CO,BB'.($isTAEPara?',CHCL,CHCO,CRCL,CRCO,HLCL,HLCO,W1,OPCL,OPCO,FECL,FECO,SU1,SU2':''), '', '');
@@ -700,10 +712,10 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'S2HCL'=>['S2 Homme Arc Classique', 0, 5, 122, 70],
                         'S3FCL'=>['S3 Femme Arc Classique', 0, 5, 122, 60],
                         'S3HCL'=>['S3 Homme Arc Classique', 0, 5, 122, 60],
-                        'U18FCO'=>['U18 Femme Arc à Poulies', 0, 9, 80, 50],
-                        'U18HCO'=>['U18 Homme Arc à Poulies', 0, 9, 80, 50],
-                        'U21FCO'=>['U21 Femme Arc à Poulies', 0, 9, 80, 50],
-                        'U21HCO'=>['U21 Homme Arc à Poulies', 0, 9, 80, 50],
+                        'U15FCO'=>['U13-U15 Femme Arc à Poulies', 0, 9, 80, 40],
+                        'U15HCO'=>['U13-U15 Homme Arc à Poulies', 0, 9, 80, 40],
+                        'U21FCO'=>['U18-U21 Femme Arc à Poulies', 0, 9, 80, 50],
+                        'U21HCO'=>['U18-U21 Homme Arc à Poulies', 0, 9, 80, 50],
                         'S1FCO'=>['S1 Femme Arc à Poulies', 0, 9, 80, 50],
                         'S1HCO'=>['S1 Homme Arc à Poulies', 0, 9, 80, 50],
                         'S2FCO'=>['S2 Femme Arc à Poulies', 0, 9, 80, 50],
@@ -712,6 +724,8 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'S3HCO'=>['S3 Homme Arc à Poulies', 0, 9, 80, 50],
                     ];
                     $EventsNat=[
+                        'NU11FCL'=>['U11 Femme Arc Classique National', 0, 5, 80, 15],
+                        'NU11HCL'=>['U11 Homme Arc Classique National', 0, 5, 80, 15],
                         'NU13FCL'=>['U13 Femme Arc Classique National', 0, 5, 80, 20],
                         'NU13HCL'=>['U13 Homme Arc Classique National', 0, 5, 80, 20],
                         'NU15FCL'=>['U15 Femme Arc Classique National', 0, 5, 80, 30],
@@ -726,20 +740,20 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'NS2HCL'=>['S2 Homme Arc Classique National', 0, 5, 122, 50],
                         'NS3FCL'=>['S3 Femme Arc Classique National', 0, 5, 122, 50],
                         'NS3HCL'=>['S3 Homme Arc Classique National', 0, 5, 122, 50],
-                        'NU15FCO'=>['U15 Femme Arc à Poulies National', 0, 5, 80, 30],
-                        'NU15HCO'=>['U15 Homme Arc à Poulies National', 0, 5, 80, 30],
-                        'NU18FCO'=>['U18 Femme Arc à Poulies National', 0, 5, 122, 50],
-                        'NU18HCO'=>['U18 Homme Arc à Poulies National', 0, 5, 122, 50],
-                        'NU21FCO'=>['U21 Femme Arc à Poulies National', 0, 5, 122, 50],
-                        'NU21HCO'=>['U21 Homme Arc à Poulies National', 0, 5, 122, 50],
+                        'NU15FCO'=>['U13-U15 Femme Arc à Poulies National', 0, 5, 80, 30],
+                        'NU15HCO'=>['U13-U15 Homme Arc à Poulies National', 0, 5, 80, 30],
+                        'NU21FCO'=>['U18-U21 Femme Arc à Poulies National', 0, 5, 122, 50],
+                        'NU21HCO'=>['U18-U21 Homme Arc à Poulies National', 0, 5, 122, 50],
                         'NS1FCO'=>['S1 Femme Arc à Poulies National', 0, 5, 122, 50],
                         'NS1HCO'=>['S1 Homme Arc à Poulies National', 0, 5, 122, 50],
                         'NS2FCO'=>['S2 Femme Arc à Poulies National', 0, 5, 122, 50],
                         'NS2HCO'=>['S2 Homme Arc à Poulies National', 0, 5, 122, 50],
                         'NS3FCO'=>['S3 Femme Arc à Poulies National', 0, 5, 122, 50],
                         'NS3HCO'=>['S3 Homme Arc à Poulies National', 0, 5, 122, 50],
-                        'NU18FBB'=>['U18 Femme Arc Nu National', 0, 5, 80, 30],
-                        'NU18HBB'=>['U18 Homme Arc Nu National', 0, 5, 80, 30],
+                        'NU15FBB'=>['U13-U15 Femme Arc Nu National', 0, 5, 80, 30],
+                        'NU15HBB'=>['U13-U15 Homme Arc Nu National', 0, 5, 80, 30],
+                        'NU21FBB'=>['U18-U21 Femme Arc Nu National', 0, 5, 122, 50],
+                        'NU21HBB'=>['U18-U21 Homme Arc Nu National', 0, 5, 122, 50],
                         'NSFBB'=>['Scratch Femme Arc Nu National', 0, 5, 122, 50],
                         'NSHBB'=>['Scratch Homme Arc Nu National', 0, 5, 122, 50],
                         'NDEC'=>['Découverte', 0, 5, 122, 30],
@@ -833,8 +847,8 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'EvWaCategory'=>'',
                     ];
                     $Events=[
-                        'U11FCL'=>['U11 Femme Arc Classique', 0, 1, 80, 18, 1],
-                        'U11HCL'=>['U11 Homme Arc Classique', 0, 1, 80, 18, 1],
+                        'U11FCL'=>['U11 Femme Arc Classique', 0, 1, 60, 10, 1],
+                        'U11HCL'=>['U11 Homme Arc Classique', 0, 1, 60, 10, 1],
                         'U13FCL'=>['U13 Femme Arc Classique', 0, 2, 60, 18, 1],
                         'U13HCL'=>['U13 Homme Arc Classique', 0, 2, 60, 18, 1],
                         'U15FCL'=>['U15 Femme Arc Classique', 0, 2, 60, 18, 1],
@@ -849,20 +863,20 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'S2HCL'=>['S2 Homme Arc Classique', 0, 2, 40, 18, 1],
                         'S3FCL'=>['S3 Femme Arc Classique', 0, 2, 40, 18, 1],
                         'S3HCL'=>['S3 Homme Arc Classique', 0, 2, 40, 18, 1],
-                        'U15FCO'=>['U15 Femme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U15HCO'=>['U15 Homme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U18FCO'=>['U18 Femme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U18HCO'=>['U18 Homme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U21FCO'=>['U21 Femme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U21HCO'=>['U21 Homme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U15FCO'=>['U13-U15 Femme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U15HCO'=>['U13-U15 Homme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U21FCO'=>['U18-U21 Femme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U21HCO'=>['U18-U21 Homme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S1FCO'=>['S1 Femme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S1HCO'=>['S1 Homme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S2FCO'=>['S2 Femme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S2HCO'=>['S2 Homme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S3FCO'=>['S3 Femme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S3HCO'=>['S3 Homme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U18FBB'=>['U18 Femme Arc Nu', 0, 2, 60, 18, 1],
-                        'U18HBB'=>['U18 Homme Arc Nu', 0, 2, 60, 18, 1],
+                        'U15FBB'=>['U13-U15 Femme Arc Nu', 0, 2, 60, 18, 1],
+                        'U15HBB'=>['U13-U15 Homme Arc Nu', 0, 2, 60, 18, 1],
+                        'U21FBB'=>['U18-U21 Femme Arc Nu', 0, 2, 40, 18, 1],
+                        'U21HBB'=>['U18-U21 Homme Arc Nu', 0, 2, 40, 18, 1],
                         'SFBB'=>['Scratch Femme Arc Nu', 0, 2, 40, 18, 1],
                         'SHBB'=>['Scratch Homme Arc Nu', 0, 2, 40, 18, 1],
                         'DEC'=>['Découverte', 0, 1, 80, 18, 1],
@@ -1007,18 +1021,37 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'EvWaCategory'=>'',
                     ];
                     $Events=[
-                        'U18FBB'=>['U18 Femme Arc Nu', 0, 2, $TargetSize6, $Distance, 1],
-                        'U18HBB'=>['U18 Homme Arc Nu', 0, 2, $TargetSize6, $Distance, 1],
-                        'U15FCL'=>['U13-U15 Femme Arc Classique', 0, 2, $TargetSize6, $Distance, 1],
-                        'U15HCL'=>['U13-U15 Homme Arc Classique', 0, 2, $TargetSize6, $Distance, 1],
+                        'U13FCL'=>['U13 Femme Arc Classique', 0, 2, $TargetSize6, $Distance, 1],
+                        'U13HCL'=>['U13 Homme Arc Classique', 0, 2, $TargetSize6, $Distance, 1],
+                        'U15FCL'=>['U15 Femme Arc Classique', 0, 2, $TargetSize6, $Distance, 1],
+                        'U15HCL'=>['U15 Homme Arc Classique', 0, 2, $TargetSize6, $Distance, 1],
+                        'U18FCL'=>['U18 Femme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'U18HCL'=>['U18 Homme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'U21FCL'=>['U21 Femme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'U21HCL'=>['U21 Homme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'S1FCL'=>['S1 Femme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'S1HCL'=>['S1 Homme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'S2FCL'=>['S2 Femme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'S2HCL'=>['S2 Homme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'S3FCL'=>['S3 Femme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
+                        'S3HCL'=>['S3 Homme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
                         'U15FCO'=>['U13-U15 Femme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
                         'U15HCO'=>['U13-U15 Homme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
-                        'SFBB'=>['Senior Femme Arc Nu', 0, 2, $TargetSize4, $Distance, 1],
-                        'SHBB'=>['Senior Homme Arc Nu', 0, 2, $TargetSize4, $Distance, 1],
-                        'SFCL'=>['Senior Femme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
-                        'SHCL'=>['Senior Homme Arc Classique', 0, 2, $TargetSize4, $Distance, 1],
-                        'SFCO'=>['Senior Femme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
-                        'SHCO'=>['Senior Homme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'U21FCO'=>['U18-U21 Femme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'U21HCO'=>['U18-U21 Homme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'S1FCO'=>['S1 Femme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'S1HCO'=>['S1 Homme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'S2FCO'=>['S2 Femme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'S2HCO'=>['S2 Homme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'S3FCO'=>['S3 Femme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'S3HCO'=>['S3 Homme Arc à Poulies', 0, 4, $TargetSize4, $Distance, 0],
+                        'U15FBB'=>['U13-U15 Femme Arc Nu', 0, 2, $TargetSize6, $Distance, 1],
+                        'U15HBB'=>['U13-U15 Homme Arc Nu', 0, 2, $TargetSize6, $Distance, 1],
+                        'U21FBB'=>['U18-U21 Femme Arc Nu', 0, 2, $TargetSize4, $Distance, 1],
+                        'U21HBB'=>['U18-U21 Homme Arc Nu', 0, 2, $TargetSize4, $Distance, 1],
+                        'SFBB'=>['Scratch Femme Arc Nu', 0, 2, $TargetSize4, $Distance, 1],
+                        'SHBB'=>['Scratch Homme Arc Nu', 0, 2, $TargetSize4, $Distance, 1],
+                        'DEC'=>['Découverte', 0, 1, $TargetSize4, $Distance, 1],
                     ];
 
                     foreach($Events as $EvCode=>$EvName) {
@@ -1047,34 +1080,36 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                 'U13HCL'=>['U13 Homme Arc Classique', 30],
                 'U15FCL'=>['U15 Femme Arc Classique', 30],
                 'U15HCL'=>['U15 Homme Arc Classique', 30],
-                'U15FBB'=>['U13-U15 Femme Arc Nu', 30],
-                'U15HBB'=>['U13-U15 Homme Arc Nu', 30],
-                'U15FAD'=>['U13-U15 Femme Arc Droit', 30],
-                'U15HAD'=>['U13-U15 Homme Arc Droit', 30],
-                'U15FCO'=>['U13-U15 Femme Arc à Poulies', 30],
-                'U15HCO'=>['U13-U15 Homme Arc à Poulies', 30],
                 'U18FCL'=>['U18 Femme Arc Classique', 50],
                 'U18HCL'=>['U18 Homme Arc Classique', 50],
-                'U18FCO'=>['U18 Femme Arc à Poulies', 50],
-                'U18HCO'=>['U18 Homme Arc à Poulies', 50],
                 'U21FCL'=>['U21 Femme Arc Classique', 50],
                 'U21HCL'=>['U21 Homme Arc Classique', 50],
-                'U21FCO'=>['U21 Femme Arc à Poulies', 50],
-                'U21HCO'=>['U21 Homme Arc à Poulies', 50],
                 'S1FCL'=>['Senior 1 Femme Arc Classique', 50],
                 'S1HCL'=>['Senior 1 Homme Arc Classique', 50],
-                'S1FCO'=>['Senior 1 Femme Arc à Poulies', 50],
-                'S1HCO'=>['Senior 1 Homme Arc à Poulies', 50],
                 'S2FCL'=>['Senior 2 Femme Arc Classique', 50],
                 'S2HCL'=>['Senior 2 Homme Arc Classique', 50],
-                'S2FCO'=>['Senior 2 Femme Arc à Poulies', 50],
-                'S2HCO'=>['Senior 2 Homme Arc à Poulies', 50],
                 'S3FCL'=>['Senior 3 Femme Arc Classique', 50],
                 'S3HCL'=>['Senior 3 Homme Arc Classique', 50],
+                'U15FCO'=>['U13-U15 Femme Arc à Poulies', 30],
+                'U15HCO'=>['U13-U15 Homme Arc à Poulies', 30],
+                'U21FCO'=>['U18-U21 Femme Arc à Poulies', 50],
+                'U21HCO'=>['U18-U21 Homme Arc à Poulies', 50],
+                'S1FCO'=>['Senior 1 Femme Arc à Poulies', 50],
+                'S1HCO'=>['Senior 1 Homme Arc à Poulies', 50],
+                'S2FCO'=>['Senior 2 Femme Arc à Poulies', 50],
+                'S2HCO'=>['Senior 2 Homme Arc à Poulies', 50],
                 'S3FCO'=>['Senior 3 Femme Arc à Poulies', 50],
                 'S3HCO'=>['Senior 3 Homme Arc à Poulies', 50],
+                'U15FBB'=>['U13-U15 Femme Arc Nu', 30],
+                'U15HBB'=>['U13-U15 Homme Arc Nu', 30],
+                'U21FBB'=>['U18-U21 Femme Arc Nu', 30],
+                'U21HBB'=>['U18-U21 Homme Arc Nu', 30],
                 'SFBB'=>['Senior Femme Arc Nu', 50],
                 'SHBB'=>['Senior Homme Arc Nu', 50],
+                'U15FAD'=>['U13-U15 Femme Arc Droit', 30],
+                'U15HAD'=>['U13-U15 Homme Arc Droit', 30],
+                'U21FAD'=>['U18-U21 Femme Arc Droit', 30],
+                'U21HAD'=>['U18-U21 Homme Arc Droit', 30],
                 'SFAD'=>['Senior Femme Arc Droit', 50],
                 'SHAD'=>['Senior Homme Arc Droit', 50],
             ];
@@ -1087,9 +1122,9 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
 	}
 }
 
-function InsertStandardEvents($TourId, $TourType, $SubRule) {
+function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreuve'=>['Division'=>['Classe1','Classe2',...]]]
 	switch($TourType) {
-        case 3:
+        case 3: // TAE OUTDOOR
             switch($SubRule) {
                 case 15: // TNJ
                     $Events['U15M']=['CL'=>['U13F','U13H', 'U15F','U15H']];
@@ -1302,16 +1337,18 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) {
                         'S2HCL'=>['CL'=>['S2H']],
                         'S3FCL'=>['CL'=>['S3F']],
                         'S3HCL'=>['CL'=>['S3H']],
-                        'U18FCO'=>['CO'=>['U18F']],
-                        'U18HCO'=>['CO'=>['U18H']],
-                        'U21FCO'=>['CO'=>['U21F']],
-                        'U21HCO'=>['CO'=>['U21H']],
+                        'U15FCO'=>['CO'=>['U13F','U15F']],
+                        'U15HCO'=>['CO'=>['U13H','U15H']],
+                        'U21FCO'=>['CO'=>['U18F','U21F']],
+                        'U21HCO'=>['CO'=>['U18H','U21H']],
                         'S1FCO'=>['CO'=>['S1F']],
                         'S1HCO'=>['CO'=>['S1H']],
                         'S2FCO'=>['CO'=>['S2F']],
                         'S2HCO'=>['CO'=>['S2H']],
                         'S3FCO'=>['CO'=>['S3F']],
                         'S3HCO'=>['CO'=>['S3H']],
+                        'NU11FCL'=>['CL'=>['U11W']],
+                        'NU11HCL'=>['CL'=>['U11M']],
                         'NU13FCL'=>['CL'=>['U13W']],
                         'NU13HCL'=>['CL'=>['U13M']],
                         'NU15FCL'=>['CL'=>['U15W']],
@@ -1328,20 +1365,20 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) {
                         'NS3HCL'=>['CL'=>['S3M']],
                         'NU15FCO'=>['CO'=>['U13W','U15W']],
                         'NU15HCO'=>['CO'=>['U13M','U15M']],
-                        'NU18FCO'=>['CO'=>['U18W']],
-                        'NU18HCO'=>['CO'=>['U18M']],
-                        'NU21FCO'=>['CO'=>['U21W']],
-                        'NU21HCO'=>['CO'=>['U21M']],
+                        'NU21FCO'=>['CO'=>['U18W','U21W']],
+                        'NU21HCO'=>['CO'=>['U18M','U21M']],
                         'NS1FCO'=>['CO'=>['S1W']],
                         'NS1HCO'=>['CO'=>['S1M']],
                         'NS2FCO'=>['CO'=>['S2W']],
                         'NS2HCO'=>['CO'=>['S2M']],
                         'NS3FCO'=>['CO'=>['S3W']],
                         'NS3HCO'=>['CO'=>['S3M']],
-                        'NU18FBB'=>['BB'=>['U15W','U18W']],
-                        'NU18HBB'=>['BB'=>['U15M','U18M']],
-                        'NSFBB'=>['BB'=>['U21W','S1W','S2W','S3W']],
-                        'NSHBB'=>['BB'=>['U21M','S1M','S2M','S3M']],
+                        'NU15FBB'=>['BB'=>['U13W','U15W']],
+                        'NU15HBB'=>['BB'=>['U13M','U15M']],
+                        'NU21FBB'=>['BB'=>['U18W','U21W']],
+                        'NU21HBB'=>['BB'=>['U18M','U21M']],
+                        'NSFBB'=>['BB'=>['S1W','S2W','S3W']],
+                        'NSHBB'=>['BB'=>['S1M','S2M','S3M']],
                         'NDEC'=>['CL'=>['DEC']],
                     ];
 
@@ -1396,7 +1433,7 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) {
                     break;
             }
             break;
-		case 6:
+		case 6: // 18m Indoor
 			switch($SubRule) {
                 case 1: // Selectif
                 case 4: // Selectif + Para
@@ -1420,46 +1457,20 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) {
                         'S3HCL'=>['CL'=>['S3H']],
                         'U15FCO'=>['CO'=>['U13F','U15F']],
                         'U15HCO'=>['CO'=>['U13H','U15H']],
-                        'U18FCO'=>['CO'=>['U18F']],
-                        'U18HCO'=>['CO'=>['U18H']],
-                        'U21FCO'=>['CO'=>['U21F']],
-                        'U21HCO'=>['CO'=>['U21H']],
+                        'U21FCO'=>['CO'=>['U18F','U21F']],
+                        'U21HCO'=>['CO'=>['U18H','U21H']],
                         'S1FCO'=>['CO'=>['S1F']],
                         'S1HCO'=>['CO'=>['S1H']],
                         'S2FCO'=>['CO'=>['S2F']],
                         'S2HCO'=>['CO'=>['S2H']],
                         'S3FCO'=>['CO'=>['S3F']],
                         'S3HCO'=>['CO'=>['S3H']],
-                        'NU13FCL'=>['CL'=>['U13W']],
-                        'NU13HCL'=>['CL'=>['U13M']],
-                        'NU15FCL'=>['CL'=>['U15W']],
-                        'NU15HCL'=>['CL'=>['U15M']],
-                        'NU18FCL'=>['CL'=>['U18W']],
-                        'NU18HCL'=>['CL'=>['U18M']],
-                        'NU21FCL'=>['CL'=>['U21W']],
-                        'NU21HCL'=>['CL'=>['U21M']],
-                        'NS1FCL'=>['CL'=>['S1W']],
-                        'NS1HCL'=>['CL'=>['S1M']],
-                        'NS2FCL'=>['CL'=>['S2W']],
-                        'NS2HCL'=>['CL'=>['S2M']],
-                        'NS3FCL'=>['CL'=>['S3W']],
-                        'NS3HCL'=>['CL'=>['S3M']],
-                        'NU15FCO'=>['CO'=>['U13W','U15W']],
-                        'NU15HCO'=>['CO'=>['U13M','U15M']],
-                        'NU18FCO'=>['CO'=>['U18W']],
-                        'NU18HCO'=>['CO'=>['U18M']],
-                        'NU21FCO'=>['CO'=>['U21W']],
-                        'NU21HCO'=>['CO'=>['U21M']],
-                        'NS1FCO'=>['CO'=>['S1W']],
-                        'NS1HCO'=>['CO'=>['S1M']],
-                        'NS2FCO'=>['CO'=>['S2W']],
-                        'NS2HCO'=>['CO'=>['S2M']],
-                        'NS3FCO'=>['CO'=>['S3W']],
-                        'NS3HCO'=>['CO'=>['S3M']],
-                        'U18FBB'=>['BB'=>['U15F','U18F']],
-                        'U18HBB'=>['BB'=>['U15H','U18H']],
-                        'SFBB'=>['BB'=>['U21F','S1F','S2F','S3F']],
-                        'SHBB'=>['BB'=>['U21H','S1H','S2H','S3H']],
+                        'U15FBB'=>['BB'=>['U13F','U15F']],
+                        'U15HBB'=>['BB'=>['U13H','U15H']],
+                        'U21FBB'=>['BB'=>['U18F','U21F']],
+                        'U21HBB'=>['BB'=>['U18H','U21H']],
+                        'SFBB'=>['BB'=>['S1F','S2F','S3F']],
+                        'SHBB'=>['BB'=>['S1H','S2H','S3H']],
                         'DEC'=>['CL'=>['DEC']],
                     ];
 
@@ -1564,18 +1575,37 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) {
 				case '1':
 				case '4':
                     $Events=[
-                        'U18FBB'=>['BB'=>['U18F']],
-                        'U18HBB'=>['BB'=>['U18H']],
-                        'U15FCL'=>['CL'=>['U13F','U15F']],
-                        'U15HCL'=>['CL'=>['U13H','U15H']],
+                        'U13FCL'=>['CL'=>['U13F']],
+                        'U13HCL'=>['CL'=>['U13H']],
+                        'U15FCL'=>['CL'=>['U15F']],
+                        'U15HCL'=>['CL'=>['U15H']],
+                        'U18FCL'=>['CL'=>['U18F']],
+                        'U18HCL'=>['CL'=>['U18H']],
+                        'U21FCL'=>['CL'=>['U21F']],
+                        'U21HCL'=>['CL'=>['U21H']],
+                        'S1FCL'=>['CL'=>['S1F']],
+                        'S1HCL'=>['CL'=>['S1H']],
+                        'S2FCL'=>['CL'=>['S2F']],
+                        'S2HCL'=>['CL'=>['S2H']],
+                        'S3FCL'=>['CL'=>['S3F']],
+                        'S3HCL'=>['CL'=>['S3H']],
                         'U15FCO'=>['CO'=>['U13F','U15F']],
                         'U15HCO'=>['CO'=>['U13H','U15H']],
-                        'SFBB'=>['BB'=>['U21F','S1F','S2F','S3F']],
-                        'SHBB'=>['BB'=>['U21H','S1H','S2H','S3H']],
-                        'SFCL'=>['CL'=>['U18F','U21F','S1F','S2F','S3F']],
-                        'SHCL'=>['CL'=>['U18H','U21H','S1H','S2H','S3H']],
-                        'SFCO'=>['CO'=>['U18F','U21F','S1F','S2F','S3F']],
-                        'SHCO'=>['CO'=>['U18H','U21H','S1H','S2H','S3H']],
+                        'U21FCO'=>['CO'=>['U18F','U21F']],
+                        'U21HCO'=>['CO'=>['U18H','U21H']],
+                        'S1FCO'=>['CO'=>['S1F']],
+                        'S1HCO'=>['CO'=>['S1H']],
+                        'S2FCO'=>['CO'=>['S2F']],
+                        'S2HCO'=>['CO'=>['S2H']],
+                        'S3FCO'=>['CO'=>['S3F']],
+                        'S3HCO'=>['CO'=>['S3H']],
+                        'U15FBB'=>['BB'=>['U13F','U15F']],
+                        'U15HBB'=>['BB'=>['U13H','U15H']],
+                        'U21FBB'=>['BB'=>['U18F','U21F']],
+                        'U21HBB'=>['BB'=>['U18H','U21H']],
+                        'SFBB'=>['BB'=>['S1F','S2F','S3F']],
+                        'SHBB'=>['BB'=>['S1H','S2H','S3H']],
+                        'DEC'=>['CL'=>['DEC']],
                     ];
                     foreach($Events as $EvCode => $Divs) {
                         foreach($Divs as $Div=>$Classes) {
@@ -1587,42 +1617,44 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) {
 					break;
 			}
 			break;
-        case 50:
+        case 50: // Beursault
             $Events=[
                 'U13FCL'=>['CL'=>['U13F']],
                 'U13HCL'=>['CL'=>['U13H']],
                 'U15FCL'=>['CL'=>['U15F']],
                 'U15HCL'=>['CL'=>['U15H']],
-                'U15FBB'=>['BB'=>['U13F','U15F']],
-                'U15HBB'=>['BB'=>['U13H','U15H']],
-                'U15FAD'=>['AD'=>['U13F','U15F']],
-                'U15HAD'=>['AD'=>['U13H','U15H']],
-                'U15FCO'=>['CO'=>['U13F','U15F']],
-                'U15HCO'=>['CO'=>['U13H','U15H']],
                 'U18FCL'=>['CL'=>['U18F']],
                 'U18HCL'=>['CL'=>['U18H']],
-                'U18FCO'=>['CO'=>['U18F']],
-                'U18HCO'=>['CO'=>['U18H']],
                 'U21FCL'=>['CL'=>['U21F']],
                 'U21HCL'=>['CL'=>['U21H']],
-                'U21FCO'=>['CO'=>['U21F']],
-                'U21HCO'=>['CO'=>['U21H']],
                 'S1FCL'=>['CL'=>['S1F']],
                 'S1HCL'=>['CL'=>['S1H']],
-                'S1FCO'=>['CO'=>['S1F']],
-                'S1HCO'=>['CO'=>['S1H']],
                 'S2FCL'=>['CL'=>['S2F']],
                 'S2HCL'=>['CL'=>['S2H']],
-                'S2FCO'=>['CO'=>['S2F']],
-                'S2HCO'=>['CO'=>['S2H']],
                 'S3FCL'=>['CL'=>['S3F']],
                 'S3HCL'=>['CL'=>['S3H']],
+                'U15FCO'=>['CO'=>['U13F','U15F']],
+                'U15HCO'=>['CO'=>['U13H','U15H']],
+                'U21FCO'=>['CO'=>['U18F','U21F']],
+                'U21HCO'=>['CO'=>['U18H','U21H']],
+                'S1FCO'=>['CO'=>['S1F']],
+                'S1HCO'=>['CO'=>['S1H']],
+                'S2FCO'=>['CO'=>['S2F']],
+                'S2HCO'=>['CO'=>['S2H']],
                 'S3FCO'=>['CO'=>['S3F']],
                 'S3HCO'=>['CO'=>['S3H']],
-                'SFBB'=>['BB'=>['U18F','U21F','S1F','S2F','S3F']],
-                'SHBB'=>['BB'=>['U18H','U21H','S1H','S2H','S3H']],
-                'SFAD'=>['AD'=>['U18F','U21F','S1F','S2F','S3F']],
-                'SHAD'=>['AD'=>['U18H','U21H','S1H','S2H','S3H']],
+                'U15FBB'=>['BB'=>['U13F','U15F']],
+                'U15HBB'=>['BB'=>['U13H','U15H']],
+                'U21FBB'=>['BB'=>['U18F','U21F']],
+                'U21HBB'=>['BB'=>['U18H','U21H']],
+                'SFBB'=>['BB'=>['S1F','S2F','S3F']],
+                'SHBB'=>['BB'=>['S1H','S2H','S3H']],
+                'U15FAD'=>['AD'=>['U13F','U15F']],
+                'U15HAD'=>['AD'=>['U13H','U15H']],
+                'U21FAD'=>['AD'=>['U18F','U21F']],
+                'U21HAD'=>['AD'=>['U18H','U21H']],
+                'SFAD'=>['AD'=>['S1F','S2F','S3F']],
+                'SHAD'=>['AD'=>['S1H','S2H','S3H']],
             ];
             foreach($Events as $EvCode => $Divs) {
                 foreach($Divs as $Div=>$Classes) {
