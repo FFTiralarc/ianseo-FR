@@ -40,10 +40,9 @@ Each menu item is a string, that joins the text description of the item and the 
 
 
 if(!empty($on) AND isset($_SESSION['TourLocSubRule']) AND $_SESSION['TourLocSubRule']=='SetFrBeursault') {
-	if (!isset($ret['MODS']['Bslt'])) {
-        $ret['MODS']['Bslt'][] = 'Beursault';
-    }
-    $ret['MODS']['Bslt'][''] = 'Saisie Scores' .'|'.$CFG->ROOT_DIR.'Modules/Custom/Bslt/';
+      if (isset($ret['QUAL']['SCOR'])) {
+          array_splice($ret['QUAL']['SCOR'], 1, 0, 'Tableau spécial Beursault' .'|'.$CFG->ROOT_DIR.'Modules/Sets/FR/Modules/Bslt/index.php');
+      }
 }
 
 ?>
