@@ -11,6 +11,10 @@ Nous le publions ici pour la transparence, pour permettre à la communauté de s
 ## Contenu
 
 Ce set définit les règles applicables aux compétitions françaises pour les formats suivants.
+Il inclut également des sous-modules pour :
+- la saisie dédiée des scores Beursault (`Modules/Bslt`), accessible dans le menu ianseo quand la règle Beursault est sélectionnée.
+- la vérification des inscriptions (`Modules/Verification`), accessible dans le menu ianseo `Participants`.
+- l'impression dédiée des "Autres Tirs" (`Modules/AutresTirs`), accessible dans le menu ianseo `Qualification`.
 
 ### Tir extérieur — 70m (type 3)
 
@@ -35,7 +39,7 @@ Ce set définit les règles applicables aux compétitions françaises pour les f
 | SetFrSelectif | Sélectif |
 | SetFrSelectifPara | Sélectif valides + para |
 | SetFRChampionshipSen | Championnat de France Adulte |
-| SetFRChampionshipJun | Championnats de France Jeune |
+| SetFRChampionshipJun | Championnat de France Jeune |
 
 ### 25m et 25+18m (types 7 et 8)
 
@@ -44,14 +48,26 @@ Ce set définit les règles applicables aux compétitions françaises pour les f
 | SetFrSelectif | Sélectif |
 | SetFrSelectifPara | Sélectif valides + para |
 
+### Campagne (types 9)
+
+| Règle | Compétition |
+|-------|-------------|
+| SetFRDominical | Sélectif |
+| SetFRChampionship | Championnat de France |
+
+### 3D (types 11)
+
+| Règle | Compétition |
+|-------|-------------|
+| SetFRDominical | Sélectif |
+| SetFRChampionship | Championnat de France |
+
 ### Beursault / Bouquet (type 50)
 
 | Règle | Compétition |
 |-------|-------------|
 | SetFrBouquet | Bouquet provincial |
 | SetFrBeursault | Beursault |
-
-Le format Beursault inclut également un sous-module de saisie de scores dédié (`Modules/Bslt`), accessible dans le menu ianseo quand ce format est sélectionné.
 
 ---
 
