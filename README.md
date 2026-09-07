@@ -48,14 +48,14 @@ Il inclut également des sous-modules pour :
 | SetFrSelectif | Sélectif |
 | SetFrSelectifPara | Sélectif valides + para |
 
-### Campagne (types 9)
+### Campagne (type 9)
 
 | Règle | Compétition |
 |-------|-------------|
 | SetFRDominical | Sélectif |
 | SetFRChampionship | Championnat de France |
 
-### 3D (types 11)
+### 3D (type 11)
 
 | Règle | Compétition |
 |-------|-------------|
