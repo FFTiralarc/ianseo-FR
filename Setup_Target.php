@@ -329,14 +329,14 @@ switch($TourType) {
 			case 13: // selectif
 			case 14: // selectif + para
 				CreateTargetFace($TourId, 1, 'Blason Complet 80', 'REG-(^CLU1[0-7])|(^COU1[0-7])|(^BBU1[0-7])|(^(OPC[LO]|FEC[LO])U1)|(^W1.+[FH])|(^C[HR])|(^H)|(^SU)', '1', 5, 80, 5, 80);
-				CreateTargetFace($TourId, 2, 'Blason Classique 122', 'REG-(^CL(U18|U2|S))|(^CO(U18|U2|S[1-3])[WM])|(^BBU(18|2))|(^BBS)|(^OPCL(U2|S))|(^OPCO(U2|S).+[WM])|(^FECL(U2|S))|(^FECO(U2|S).+[WM])|(^W1.+[WM])', '1', 5, 122, 5, 122);
-				CreateTargetFace($TourId, 3, 'Blason Poulies 80', 'REG-(^CO(U18|U2|S[1-3])[FH])|(^OPCO.+[FH])|(^FECO.+[FH])', '1',  9, 80, 9, 80);
+				CreateTargetFace($TourId, 2, 'Blason Classique 122', 'REG-(^CL(U18|U2|S))|(^CO(U18|U2.|S[1-3])[WM])|(^BBU(18|2))|(^BBS)|(^OPCL(U2|S))|(^OPCO(U2|S).+[WM])|(^FECL(U2|S))|(^FECO(U2|S).+[WM])|(^W1.+[WM])', '1', 5, 122, 5, 122);
+				CreateTargetFace($TourId, 3, 'Blason Poulies 80', 'REG-(^CO(U18|U2.|S[1-3])[FH])|(^OPCO.+[FH])|(^FECO.+[FH])', '1',  9, 80, 9, 80);
 				CreateTargetFace($TourId, 4, 'Blason Découverte', 'CLD%', '1',  1, 122, 1, 122);
 				break;
 			default:
 				CreateTargetFace($TourId, 1, 'Blason Complet 80', 'REG-(^CLU1[0-7])|(^COU1[0-7])|(^BBU1[0-7])|(^(OPC[LO]|FEC[LO])U1)|(^W1.+[FH])|(^C[HR])|(^H)|(^SU)', '1', 5, 80, 5, 80);
-				CreateTargetFace($TourId, 2, 'Blason Classique 122', 'REG-(^CL(U18|U2|S))|(^CO(U18|U2|S[1-3])[WM])|(^BBU(18|2))|(^BBS)|(^OPCL(U2|S))|(^OPCO(U2|S).+[WM])|(^FECL(U2|S))|(^FECO(U2|S).+[WM])|(^W1.+[WM])', '1', 5, 122, 5, 122);
-				CreateTargetFace($TourId, 3, 'Blason Poulies 80', 'REG-(^CO(U18|U2|S[1-3])[FH])|(^OPCO.+[FH])|(^FECO.+[FH])', '1',  9, 80, 9, 80);
+				CreateTargetFace($TourId, 2, 'Blason Classique 122', 'REG-(^CL(U18|U2|S))|(^CO(U18|U2.|S[1-3])[WM])|(^BBU(18|2))|(^BBS)|(^OPCL(U2|S))|(^OPCO(U2|S).+[WM])|(^FECL(U2|S))|(^FECO(U2|S).+[WM])|(^W1.+[WM])', '1', 5, 122, 5, 122);
+				CreateTargetFace($TourId, 3, 'Blason Poulies 80', 'REG-(^CO(U18|U2.|S[1-3])[FH])|(^OPCO.+[FH])|(^FECO.+[FH])', '1',  9, 80, 9, 80);
 				CreateTargetFace($TourId, 4, 'Blason Découverte', 'CLD%', '1',  1, 122, 1, 122);
 		}
 		break;
