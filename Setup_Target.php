@@ -262,6 +262,19 @@ switch($TourType) {
 	case 8:
 		CreateDistanceNew($TourId, $TourType, '%', array(array('25m-1',25), array('25m-2',25), array('18m-1',18), array('18m-2',18)));
 		break;
+	case 39:
+        CreateDistanceNew($TourId, $TourType, '__Pl%', array(array('10m-1',10)));
+        CreateDistanceNew($TourId, $TourType, '__FlBla%', array(array('10m-1',10)));
+        CreateDistanceNew($TourId, $TourType, '__FlN%', array(array('15m-1',15)));
+        CreateDistanceNew($TourId, $TourType, '__FlBle%', array(array('20m-1',20)));
+        CreateDistanceNew($TourId, $TourType, '__FlR%', array(array('25m-1',25)));
+        CreateDistanceNew($TourId, $TourType, '__FlJ%', array(array('30m-1',30)));
+        CreateDistanceNew($TourId, $TourType, '__FlBr%', array(array('40m-1',40)));
+        CreateDistanceNew($TourId, $TourType, 'CLFlA%', array(array('60m-1',60)));
+        CreateDistanceNew($TourId, $TourType, 'CLFlO%', array(array('70m-1',70)));
+        CreateDistanceNew($TourId, $TourType, 'COFlA%', array(array('50m-1',50)));
+        CreateDistanceNew($TourId, $TourType, 'COFlO%', array(array('50m-1',50)));
+		break;
     case 50:
 		CreateDistanceNew($TourId, $TourType, '%U13%', array(array('30m',30)));
 		CreateDistanceNew($TourId, $TourType, '%U15%', array(array('30m',30)));
@@ -277,7 +290,7 @@ switch($TourType) {
         break;
 }
 
-if(in_array($TourType, array(3, 6, 7, 8, 50))) {
+if(in_array($TourType, array(3, 6, 7, 8, 39, 50))) {
 	// default Events
 	CreateStandardEvents($TourId, $TourType, $SubRule, $TourType!=6);
 
@@ -387,6 +400,11 @@ switch($TourType) {
 		// optional target faces
 		CreateTargetFace($TourId, $TgtId++, 'Trispot Classique 60cm/40cm', 'REG-(^(CL|BB)(U18|U2|S))', '',  2, 60, 2, 60, 2, 40, 2, 40);
 		break;
+    case 39: // Badges
+        CreateTargetFace($TourId, $TgtId++, 'Blason Complet 80', 'REG-(^((CL(Fl|P)|COFl)(Bl|N|R|J|l)|CLFlBr))', '1', 5, 80);
+        CreateTargetFace($TourId, $TgtId++, 'Blason Classique 122', 'REG-(^CLFl(Ar|Or))', '1', 5, 122);
+        CreateTargetFace($TourId, $TgtId++, 'Blason Poulies 80', 'COFl_r%', '1', 9, 80);
+        break;
     case 50: // Beursault
         switch($SubRule) {
             case 1: // Bouquet
@@ -400,7 +418,18 @@ switch($TourType) {
 }
 
 // create a first distance prototype
-CreateDistanceInformation($TourId, $DistanceInfoArray, 24, 4);
+switch($TourType) {
+    case 39: // Badges
+        // 10 targets, 2 archers per target & 2 session type
+        $DistanceInfoArray=array(array(6,6));
+        CreateDistanceInformation($TourId, $DistanceInfoArray, 10, 2, 1, 'Passage de Flèche');
+        $DistanceInfoArray=array(array(3,6));
+        CreateDistanceInformation($TourId, $DistanceInfoArray, 10, 2, 2, 'Passage de Plume');
+        break;
+    default:
+        CreateDistanceInformation($TourId, $DistanceInfoArray, 24, 4);
+        break;
+}
 
 $tourDetIocCode         = 'FRA';
 
