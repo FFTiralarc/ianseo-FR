@@ -1409,7 +1409,7 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreu
                         $Events['NCHCO']=['CHCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NCRFCL']=['CRCL'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W']];
                         $Events['NCRHCL']=['CRCL'=>['U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
-                        $Events['NCRCO']=['CHCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
+                        $Events['NCRCO']=['CRCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NHLCL']=['HLCL'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NHLCO']=['HLCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NW1']=['W1'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
@@ -1489,7 +1489,7 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreu
                         $Events['CHCO']=['CHCO'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['CRFCL']=['CRCL'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F']];
                         $Events['CRHCL']=['CRCL'=>['U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
-                        $Events['CRCO']=['CHCO'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
+                        $Events['CRCO']=['CRCO'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['HV1']=['HV1'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['HV2']=['HV2'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['HLCL']=['HLCL'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
