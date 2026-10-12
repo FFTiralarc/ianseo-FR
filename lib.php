@@ -865,8 +865,10 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                         'S3HCL'=>['S3 Homme Arc Classique', 0, 2, 40, 18, 1],
                         'U15FCO'=>['U13-U15 Femme Arc à Poulies', 0, 4, 40, 18, 0],
                         'U15HCO'=>['U13-U15 Homme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U21FCO'=>['U18-U21 Femme Arc à Poulies', 0, 4, 40, 18, 0],
-                        'U21HCO'=>['U18-U21 Homme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U18FCO'=>['U18 Femme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U18HCO'=>['U18 Homme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U21FCO'=>['U21 Femme Arc à Poulies', 0, 4, 40, 18, 0],
+                        'U21HCO'=>['U21 Homme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S1FCO'=>['S1 Femme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S1HCO'=>['S1 Homme Arc à Poulies', 0, 4, 40, 18, 0],
                         'S2FCO'=>['S2 Femme Arc à Poulies', 0, 4, 40, 18, 0],
@@ -1409,7 +1411,7 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreu
                         $Events['NCHCO']=['CHCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NCRFCL']=['CRCL'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W']];
                         $Events['NCRHCL']=['CRCL'=>['U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
-                        $Events['NCRCO']=['CHCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
+                        $Events['NCRCO']=['CRCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NHLCL']=['HLCL'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NHLCO']=['HLCO'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
                         $Events['NW1']=['W1'=>['U13W','U15W','U18W','U21W','S1W','S2W','S3W','U13M','U15M','U18M','U21M','S1M','S2M','S3M']];
@@ -1457,8 +1459,10 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreu
                         'S3HCL'=>['CL'=>['S3H']],
                         'U15FCO'=>['CO'=>['U13F','U15F']],
                         'U15HCO'=>['CO'=>['U13H','U15H']],
-                        'U21FCO'=>['CO'=>['U18F','U21F']],
-                        'U21HCO'=>['CO'=>['U18H','U21H']],
+                        'U18FCO'=>['CO'=>['U18F']],
+                        'U18HCO'=>['CO'=>['U18H']],
+                        'U21FCO'=>['CO'=>['U21F']],
+                        'U21HCO'=>['CO'=>['U21H']],
                         'S1FCO'=>['CO'=>['S1F']],
                         'S1HCO'=>['CO'=>['S1H']],
                         'S2FCO'=>['CO'=>['S2F']],
@@ -1489,7 +1493,7 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreu
                         $Events['CHCO']=['CHCO'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['CRFCL']=['CRCL'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F']];
                         $Events['CRHCL']=['CRCL'=>['U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
-                        $Events['CRCO']=['CHCO'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
+                        $Events['CRCO']=['CRCO'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['HV1']=['HV1'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['HV2']=['HV2'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
                         $Events['HLCL']=['HLCL'=>['U13F','U15F','U18F','U21F','S1F','S2F','S3F','U13H','U15H','U18H','U21H','S1H','S2H','S3H']];
