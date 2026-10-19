@@ -356,7 +356,7 @@ switch($TourType) {
 
 				// optional target faces
 				CreateTargetFace($TourId, $TgtId++, 'Trispot Classique 6-10 40cm', 'REG-(^(CL|BB)(U18|U2|S))'.($SubRule==4 ? '|(^OPCLS)|(^OPCLU2)|(^FECLS)|(^FECLU2)|(^W1)' : ''), '',  2, 40, 2, 40);
-				CreateTargetFace($TourId, $TgtId++, 'Trispot Classique 6-10 60cm', 'REG-(^CLU15|^BBU1[3-5])', '',  2, 60, 2, 60);
+				CreateTargetFace($TourId, $TgtId++, 'Trispot Classique 6-10 60cm', 'REG-(^(CL|BB)U1(3|5))', '',  2, 60, 2, 60);
 				break;
 			case '2':
 				// Championships Adults
