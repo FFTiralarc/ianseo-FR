@@ -86,7 +86,12 @@ if(!empty($_REQUEST['lev'])) {
         // Poussin => P
 		//	break;
 	}
-
+    switch($COMP->ToTypeName) {
+        // Nature tournament
+        case 'Type_FR_Nature':
+            $Discipline='N';
+            break;
+    }
     $Filter='';
     if($_REQUEST['lev']=='S') {
         $Filter=" and DivIsPara=0";
@@ -241,8 +246,8 @@ if(!empty($_REQUEST['lev'])) {
 			$Archers[$r->IndEvent][$r->EnId][23] = $r->QuD2Score ? $r->QuD2Score : '';
 		}
 
-		$Archers[$r->IndEvent][$r->EnId][17] = ($COMP->ToCategory==4 or $COMP->ToCategory==8) ? $r->TfPiquet : $r->MaxDistance;
-		$Archers[$r->IndEvent][$r->EnId][18] = ($COMP->ToCategory==4 or $COMP->ToCategory==8) ? '' : $r->MaxTargetFace;
+		$Archers[$r->IndEvent][$r->EnId][17] = ($COMP->ToCategory==4 or $COMP->ToCategory==8 or $COMP->ToTypeName=='Type_FR_Nature') ? $r->TfPiquet : $r->MaxDistance;
+		$Archers[$r->IndEvent][$r->EnId][18] = ($COMP->ToCategory==4 or $COMP->ToCategory==8 or $COMP->ToTypeName=='Type_FR_Nature') ? '' : $r->MaxTargetFace;
 		$Archers[$r->IndEvent][$r->EnId][19] = date('d/m/Y', strtotime($COMP->ToWhenFrom));
 		$Archers[$r->IndEvent][$r->EnId][20] = str_replace(["\n","\r"], ' / ', trim($COMP->ToVenue));
 		$Archers[$r->IndEvent][$r->EnId][21] = $QualPlace;
