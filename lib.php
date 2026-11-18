@@ -52,7 +52,7 @@ function CreateStandardDivisions($TourId, $TourType, $SubRule) {
             CreateDivision($TourId, $i++, 'W1', 'W1', 1, 'W1', 'W1', 1);
             CreateDivision($TourId, $i++, 'CHCL', 'Challenge Arc Classique', 1, '', '', 1);
             CreateDivision($TourId, $i++, 'CHCO', 'Challenge Arc à Poulies', 1, '', '', 1);
-            CreateDivision($TourId, $i++, 'CRCL', 'Critérium Arc CLassique', 1, '', '', 1);
+            CreateDivision($TourId, $i++, 'CRCL', 'Critérium Arc Classique', 1, '', '', 1);
             CreateDivision($TourId, $i++, 'CRCO', 'Critérium Arc à Poulies', 1, '', '', 1);
             CreateDivision($TourId, $i++, 'HLCL', 'HV Libre Arc Classique', 1, '', '', 1);
             CreateDivision($TourId, $i++, 'HLCO', 'HV Libre Arc à Poulies', 1, '', '', 1);
