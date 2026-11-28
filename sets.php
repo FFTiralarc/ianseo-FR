@@ -2,7 +2,7 @@
 require_once('Common/Fun_Modules.php');
 $version='2017-11-23 18:13:00';
 
-$AllowedTypes=array(3, 6, 7, 8, 9, 11, 50);
+$AllowedTypes=array(3, 6, 7, 8, 9, 11, 39, 50);
 
 $SetType['FR']['descr']=get_text('Setup-FR', 'Install');
 $SetType['FR']['noc'] = 'FRA';
@@ -49,3 +49,7 @@ $SetType['FR']['rules']["8"][3]='SetFrSelectifPara';
 // Beursault
 $SetType['FR']['rules']["50"][0]='SetFrBouquet';
 $SetType['FR']['rules']["50"][1]='SetFrBeursault';
+
+
+// Badges
+$SetType['FR']['rules']["39"][0]='SetFrBadges';

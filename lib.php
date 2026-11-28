@@ -129,6 +129,17 @@ function CreateStandardClasses($TourId, $TourType, $SubRule) {
 					break;
 			}
 			break;
+		case '39': // Badges
+            CreateClass($TourId, $i++, 1, 127, -1, 'Plume', 'Plume', 'Plume',			'1', 'CL',    '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlBla', 'FlBla', 'Flèche Blanche',	'1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlNoi', 'FlNoi', 'Flèche Noire',	'1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlBle', 'FlBle', 'Flèche Bleue',	'1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlRou', 'FlRou', 'Flèche Rouge',	'1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlJau', 'FlJau', 'Flèche Jaune',	'1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlBr',  'FlBr',  'Flèche de Bronze','1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlAr',  'FlAr',  'Flèche d\'Argent','1', 'CL,CO', '', '');
+            CreateClass($TourId, $i++, 1, 127, -1, 'FlOr',  'FlOr',  'Flèche d\'Or',	'1', 'CL,CO', '', '');
+			break;
 		case '50': // Beursault
             CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 1, 'U13F', 'U13F,U15F', 'U13 Femme', '1', '', '', '');
             CreateClass($TourId, $i++, 11+$NextYearClass, 12+$NextYearClass, 0, 'U13H', 'U13H,U15H', 'U13 Homme', '1', '', '', '');
@@ -1066,6 +1077,40 @@ function CreateStandardEvents($TourId, $TourType, $SubRule, $Outdoor=false) {
                     break;
             }
             break;
+        case 39: // Badges
+            $Options=array(
+                'EvFinalFirstPhase' => 0,
+                'EvNumQualified' => 0,
+                'EvRecCategory' => '',
+                'EvWaCategory' => '',
+            );
+            $Events=array(
+                // EvCode => array(EvEventName, Division, Class, EvFinalTargetType, EvTargetSize, EvDistance)
+                'CL_Plume' => array('Plume - Arc Classique', 5, 80, 10),
+                'CL_FlBla' => array('Flèche Blanche - Arc Classique', 5, 80, 10),
+                'CL_FlNoi' => array('Flèche Noire - Arc Classique', 5, 80, 15),
+                'CL_FlBle' => array('Flèche Bleue - Arc Classique', 5, 80, 20),
+                'CL_FlRou' => array('Flèche Rouge - Arc Classique', 5, 80, 25),
+                'CL_FlJau' => array('Flèche Jaune - Arc Classique', 5, 80, 30),
+                'CL_FlBr'  => array('Flèche de Bronze - Arc Classique', 5, 80, 40),
+                'CL_FlAr'  => array('Flèche d\'Argent - Arc Classique', 5, 122, 60),
+                'CL_FlOr'  => array('Flèche d\'Or - Arc Classique', 5, 122, 70),
+                'CO_FlBla' => array('Flèche Blanche - Arc à Poulies', 5, 80, 10),
+                'CO_FlNoi' => array('Flèche Noire - Arc à Poulies', 5, 80, 15),
+                'CO_FlBle' => array('Flèche Bleue - Arc à Poulies', 5, 80, 20),
+                'CO_FlRou' => array('Flèche Rouge - Arc à Poulies', 5, 80, 25),
+                'CO_FlJau' => array('Flèche Jaune - Arc à Poulies', 5, 80, 30),
+                'CO_FlBr'  => array('Flèche de Bronze - Arc à Poulies', 9, 80, 40),
+                'CO_FlAr'  => array('Flèche d\'Argent - Arc à Poulies', 9, 80, 50),
+                'CO_FlOr'  => array('Flèche d\'Or - Arc à Poulies', 9, 80, 50),
+            );
+            foreach($Events as $EvCode=>$EvName) {
+                $Options['EvFinalTargetType']=$EvName[1];
+                $Options['EvTargetSize']=$EvName[2];
+                $Options['EvDistance']=$EvName[3];
+                CreateEventNew($TourId, $EvCode, $EvName[0], $i++, $Options);
+            }
+            break;
         case 50: // Beursault
             // NEVER as Team
             $Options=[
@@ -1617,6 +1662,34 @@ function InsertStandardEvents($TourId, $TourType, $SubRule) { // $Events=['Epreu
 					break;
 			}
 			break;
+        case 39: // Badges
+            $Events=[
+                'CL_Plume' =>['CL'=>['Plume']],
+                'CL_FlBla' =>['CL'=>['FlBla']], 
+                'CL_FlNoi' =>['CL'=>['FlNoi']], 
+                'CL_FlBle' =>['CL'=>['FlBle']], 
+                'CL_FlRou' =>['CL'=>['FlRou']], 
+                'CL_FlJau' =>['CL'=>['FlJau']], 
+                'CL_FlBr'  =>['CL'=>['FlBr']], 
+                'CL_FlAr'  =>['CL'=>['FlAr']], 
+                'CL_FlOr'  =>['CL'=>['FlOr']], 
+                'CO_FlBla' =>['CO'=>['FlBla']], 
+                'CO_FlNoi' =>['CO'=>['FlNoi']], 
+                'CO_FlBle' =>['CO'=>['FlBle']], 
+                'CO_FlRou' =>['CO'=>['FlRou']], 
+                'CO_FlJau' =>['CO'=>['FlJau']], 
+                'CO_FlBr'  =>['CO'=>['FlBr']], 
+                'CO_FlAr'  =>['CO'=>['FlAr']], 
+                'CO_FlOr'  =>['CO'=>['FlOr']], 
+            ];
+            foreach($Events as $EvCode => $Divs) {
+                foreach($Divs as $Div=>$Classes) {
+                    foreach($Classes as $Class) {
+                        InsertClassEvent($TourId, 0, 1, $EvCode, $Div, $Class);
+                    }
+                }
+            }
+            break;
         case 50: // Beursault
             $Events=[
                 'U13FCL'=>['CL'=>['U13F']],
